@@ -19,7 +19,7 @@ const Nav = () => {
       <NavbarContent justify="end">
         <NavbarItem>
           <Button radius="full" className="bg-transparent">
-            Sign Up
+            Sign In
           </Button>
         </NavbarItem>
       </NavbarContent>
