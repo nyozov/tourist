@@ -22,10 +22,10 @@ export default function Attractions() {
       .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="p-8 w-full">Loading...</div>;
+  if (loading) return <div className="w-full">Loading...</div>;
 
   return (
-    <div className=" w-full">
+    <div className="h-full w-full">
         <Map attractions={attractions} />
     </div>
   );

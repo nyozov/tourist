@@ -32,7 +32,7 @@ export default function Schedule() {
   };
 
   return (
-    <div className="h-full max-h-screen w-1/2 flex flex-col">
+    <div className="h-full  w-1/2 flex flex-col">
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {days.map((day, index) => (
           <Card key={day} className="shadow-sm">

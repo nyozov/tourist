@@ -58,9 +58,8 @@ export default function Map({ attractions }: { attractions: any[] }) {
     : { lat: 0, lng: 0 };
 
   return (
-    <div className="w-full">
       <GoogleMap
-        mapContainerClassName="w-full h-[800px]"
+        mapContainerClassName="w-full h-full"
         center={center}
         zoom={15}
         options={{
@@ -73,6 +72,5 @@ export default function Map({ attractions }: { attractions: any[] }) {
       >
         {cards}
       </GoogleMap>
-    </div>
   );
 }
