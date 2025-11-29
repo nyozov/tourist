@@ -1,11 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Card, CardFooter, Image, Button } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import Map from "./Map";
+import AttractionSlider from "./AttractionSlider";
 
 export default function Attractions() {
   const [attractions, setAttractions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const disclosure = useDisclosure(); // contains { isOpen, onOpen, onClose, onOpenChange }
+  const [selectedAttraction, setSelectedAttraction] = useState<any>(null);
+
+   const openDrawer = (attraction: any) => {
+    setSelectedAttraction(attraction);
+    disclosure.onOpen(); // opens the drawer
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -26,7 +35,11 @@ export default function Attractions() {
 
   return (
     <div className="h-full w-full">
-        <Map attractions={attractions} />
+      <Map attractions={attractions} onViewClick={openDrawer} />
+      <AttractionSlider
+        disclosure={disclosure}
+        attraction={selectedAttraction}
+      />
     </div>
   );
 }

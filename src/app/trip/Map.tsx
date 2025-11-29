@@ -1,13 +1,26 @@
 "use client";
 
-import { useState, memo, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { GoogleMap, OverlayView, useJsApiLoader } from "@react-google-maps/api";
-import { Card, CardHeader, CardBody, CardFooter, Button } from "@heroui/react";
+import { Card, CardBody, Button } from "@heroui/react";
 
-export default function Map({ attractions }: { attractions: any[] }) {
+interface MapProps {
+  attractions: any[];
+  onViewClick: (attraction: any) => void;
+}
+
+export default function Map({ attractions, onViewClick }: MapProps) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!,
   });
+
+  // 👇 Only set center once
+  const [initialCenter] = useState(() => {
+    return attractions.length
+      ? { lat: attractions[0].latitude, lng: attractions[0].longitude }
+      : { lat: 0, lng: 0 };
+  });
+
   const cards = useMemo(
     () =>
       attractions.map((place) => (
@@ -17,60 +30,47 @@ export default function Map({ attractions }: { attractions: any[] }) {
           mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         >
           <div className="flex flex-col items-center cursor-pointer">
-            <div className="flex flex-col items-center">
-              <div className=" bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center">
-                <Card>
-                  <CardBody>
-                    <div className="w-full h-full flex flex-col">
-                      <p className="font-bold text-nowrap">{place.name}</p>
-                      <div className="flex flex-row items-center mt-2">
-                        <p className="text-nowrap text-tiny text-gray-500">
-                          {place.distance / 100} km
-                        </p>
-                        <Button
-                          size="sm"
-                          radius="full"
-                          color="primary"
-                          className="ms-4"
-                        >
-                          View
-                        </Button>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-              <div
-                className="w-1 border-l-4 border-r-4 border-t-8 border-transparent 
-               border-t-white shadow-md -mt-1"
-              />
-            </div>
+            <Card className="p-2 shadow-xl">
+              <CardBody>
+                <div className="flex flex-col gap-2">
+                  <p className="font-bold">{place.name}</p>
+                  <p className="text-tiny text-gray-600">
+                    {(place.distance / 100).toFixed(1)} km
+                  </p>
+                  <Button
+                    size="sm"
+                    radius="full"
+                    color="primary"
+                    onPress={() => onViewClick(place)}
+                  >
+                    View
+                  </Button>
+                </div>
+              </CardBody>
+            </Card>
+            <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-transparent border-t-white shadow-md -mt-1" />
           </div>
         </OverlayView>
       )),
-    [attractions]
+    [attractions, onViewClick]
   );
 
   if (!isLoaded) return <div>Loading map...</div>;
 
-  const center = attractions.length
-    ? { lat: attractions[0].latitude, lng: attractions[0].longitude }
-    : { lat: 0, lng: 0 };
-
   return (
-      <GoogleMap
-        mapContainerClassName="w-full h-full"
-        center={center}
-        zoom={15}
-        options={{
-          gestureHandling: "greedy",
-          disableDefaultUI: true,
-          clickableIcons: false,
-          mapTypeControl: false,
-          streetViewControl: false,
-        }}
-      >
-        {cards}
-      </GoogleMap>
+    <GoogleMap
+      mapContainerClassName="w-full h-full"
+      center={initialCenter} // only used on first render
+      zoom={15}
+      options={{
+        gestureHandling: "greedy",
+        disableDefaultUI: true,
+        clickableIcons: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+      }}
+    >
+      {cards}
+    </GoogleMap>
   );
 }
