@@ -6,7 +6,7 @@ import {
   Button,
 } from "@heroui/react";
 
-export default function AttractionSlider({ disclosure, attraction }) {
+export default function AttractionSlider({ disclosure, attraction, isLoading }) {
   return (
     <Drawer isOpen={disclosure.isOpen} onOpenChange={disclosure.onOpenChange}>
       <DrawerContent>
@@ -16,7 +16,7 @@ export default function AttractionSlider({ disclosure, attraction }) {
               {attraction?.name || "No attraction selected"}
             </DrawerHeader>
             <DrawerBody>
-              {attraction && <p>{attraction.location.address}</p>}
+              {attraction && <p>{JSON.stringify(attraction)}</p>}
             </DrawerBody>
           </>
         )}

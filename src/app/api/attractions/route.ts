@@ -21,7 +21,7 @@ export async function GET(req: Request) {
     "13004", "11046"
   ].join(",");
 
-  const url = `https://places-api.foursquare.com/places/search?ll=${lat},${lon}&categories=${categories}&radius=5000&limit=10`;
+  const url = `https://places-api.foursquare.com/places/search?ll=${lat},${lon}&categories=${categories}&radius=5000&limit=10&`;
 
   const options = {
     method: "GET",

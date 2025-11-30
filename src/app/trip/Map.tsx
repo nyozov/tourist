@@ -41,7 +41,7 @@ export default function Map({ attractions, onViewClick }: MapProps) {
                     size="sm"
                     radius="full"
                     color="primary"
-                    onPress={() => onViewClick(place)}
+                    onPress={() => onViewClick(place.fsq_place_id)}
                   >
                     View
                   </Button>

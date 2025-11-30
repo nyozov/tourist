@@ -10,10 +10,24 @@ export default function Attractions() {
 
   const disclosure = useDisclosure(); // contains { isOpen, onOpen, onClose, onOpenChange }
   const [selectedAttraction, setSelectedAttraction] = useState<any>(null);
+  const [isLoadingAttraction, setIsLoadingAttraction] = useState(false);
 
-   const openDrawer = (attraction: any) => {
-    setSelectedAttraction(attraction);
-    disclosure.onOpen(); // opens the drawer
+  const openDrawer = async (attractionId: string) => {
+    setIsLoadingAttraction(true);
+    disclosure.onOpen();
+
+    try {
+      const res = await fetch(`/api/attractions/${attractionId}`);
+      const data = await res.json();
+
+      console.log("attraction details data:", data);
+
+      setSelectedAttraction(data);
+    } catch (err) {
+      console.error("Error fetching details", err);
+    } finally {
+      setIsLoadingAttraction(false);
+    }
   };
 
   useEffect(() => {
@@ -39,6 +53,7 @@ export default function Attractions() {
       <AttractionSlider
         disclosure={disclosure}
         attraction={selectedAttraction}
+        isLoading={isLoadingAttraction}
       />
     </div>
   );
