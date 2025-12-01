@@ -10,11 +10,11 @@ interface MapProps {
 }
 
 const Map = ({ attractions, onViewClick }: MapProps) => {
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!,
   });
 
-  // 👇 Only set center once
   const [initialCenter] = useState(() => {
     return attractions.length
       ? { lat: attractions[0].latitude, lng: attractions[0].longitude }
@@ -95,7 +95,7 @@ const Map = ({ attractions, onViewClick }: MapProps) => {
   return (
     <GoogleMap
       mapContainerClassName="w-full h-full"
-      center={initialCenter} // only used on first render
+      center={initialCenter}
       zoom={15}
       options={{
         // disable extras from google maps
