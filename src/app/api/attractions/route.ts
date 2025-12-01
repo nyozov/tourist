@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-
-export async function GET(req: Request) {
+export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);
   const lon = searchParams.get("lon");
   const lat = searchParams.get("lat");
@@ -12,13 +11,25 @@ export async function GET(req: Request) {
 
   const bearerToken = process.env.FOURSQUARE_BEARER;
   if (!bearerToken) {
-    return NextResponse.json({ error: "Missing FOURSQUARE_BEARER key" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Missing FOURSQUARE_BEARER key" },
+      { status: 500 }
+    );
   }
 
   const categories = [
-    "16000", "16021", "16024", "16025", "16030",
-    "16032", "16033", "16026", "18000", "13003",
-    "13004", "11046"
+    "16000",
+    "16021",
+    "16024",
+    "16025",
+    "16030",
+    "16032",
+    "16033",
+    "16026",
+    "18000",
+    "13003",
+    "13004",
+    "11046",
   ].join(",");
 
   const url = `https://places-api.foursquare.com/places/search?ll=${lat},${lon}&categories=${categories}&radius=5000&limit=10&`;
@@ -37,7 +48,10 @@ export async function GET(req: Request) {
     if (!res.ok) {
       const errText = await res.text();
       console.error("Foursquare API error:", errText);
-      return NextResponse.json({ error: "Foursquare fetch failed", details: errText }, { status: res.status });
+      return NextResponse.json(
+        { error: "Foursquare fetch failed", details: errText },
+        { status: res.status }
+      );
     }
 
     const data = await res.json();
@@ -49,4 +63,4 @@ export async function GET(req: Request) {
       { status: 500 }
     );
   }
-}
+};

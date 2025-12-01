@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
 
-export async function GET(
+export const GET = async (
   _request: Request,
   context: { params: Promise<{ id: string }> }
-) {
-  
+) => {
   const params = await context.params;
   const placeId = params.id;
 
   if (!placeId) {
-    return NextResponse.json(
-      { error: "Missing place ID" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing place ID" }, { status: 400 });
   }
 
   const bearerToken = process.env.FOURSQUARE_BEARER;
@@ -28,4 +24,4 @@ export async function GET(
 
   const data = await res.json();
   return NextResponse.json(data);
-}
+};

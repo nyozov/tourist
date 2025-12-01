@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q");
 
@@ -29,4 +29,4 @@ export async function GET(req: Request) {
   }));
 
   return NextResponse.json(items);
-}
+};
