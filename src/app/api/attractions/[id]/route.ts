@@ -4,11 +4,9 @@ export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  // Await the params promise
+  
   const params = await context.params;
   const placeId = params.id;
-
-  console.log("PLACE ID:", placeId);
 
   if (!placeId) {
     return NextResponse.json(

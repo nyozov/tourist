@@ -51,7 +51,7 @@ const AttractionSlider = ({ disclosure, attraction, isLoading }) => {
                       {attraction.location?.address}
                     </p>
                     {/* Add more attraction details here */}
-                    <p className="text-xs">{JSON.stringify(attraction)}</p>
+                    <p className="text-xs wrap-break-word">{JSON.stringify(attraction)}</p>
                   </div>
 
                   {/* Day Selector Section */}
