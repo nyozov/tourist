@@ -5,6 +5,8 @@ import { useTripContext } from "@/app/context/TripContext";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import DayCard from "./DayCard";
 import ActivityCard from "./ActivityCard";
+import { Skeleton } from "@heroui/skeleton";
+import { Card, CardHeader, CardBody } from "@heroui/react";
 
 const Schedule = () => {
   const { days, schedule, isLoading, moveActivityBetweenDays } =
@@ -12,7 +14,29 @@ const Schedule = () => {
 
   const [activeActivity, setActiveActivity] = useState<any>(null);
 
-  if (isLoading) return <div className="w-1/2">Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="h-full w-1/2 flex flex-col">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+            <Card key={i} className="shadow-sm">
+              <CardHeader className="flex justify-between items-center pb-2">
+                <div>
+                  <Skeleton className="h-6 w-14 rounded-lg mb-1" />
+                  <Skeleton className="h-4 w-28 rounded-lg" />
+                </div>
+              </CardHeader>
+              <CardBody>
+                <div className="pt-0 rounded-3xl">
+                  <Skeleton className="h-16 w-full rounded-3xl" />
+                </div>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const handleDragStart = (event: any) => {
     const { active } = event;

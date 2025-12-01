@@ -30,7 +30,6 @@ const SearchForm = () => {
 
   const [query, setQuery] = useState("");
   const [places, setPlaces] = useState<PlaceItem[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const router = useRouter();
@@ -52,7 +51,7 @@ const SearchForm = () => {
       } catch {
         setPlaces([]);
       }
-    }, 300);
+    }, 200);
   };
 
   const handlePlaceSelect = (key: string) => {
@@ -68,11 +67,6 @@ const SearchForm = () => {
 
     const { destination, dateRange } = formPayload;
 
-    if (!destination || !dateRange.start || !dateRange.end) {
-      setError("Please fill out all fields");
-      return;
-    }
-
     const params = new URLSearchParams({
       destination: destination?.label,
       lat: destination?.lat?.toString(),
@@ -85,48 +79,51 @@ const SearchForm = () => {
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-6xl flex flex-col lg:flex-row gap-4 items-center p-6 border-1 rounded-3xl border-gray-200 shadow-sm"
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-6xl flex flex-col lg:flex-row gap-4 items-center p-6 border-1 rounded-3xl border-gray-200 shadow-sm"
+    >
+      <Autocomplete
+        defaultItems={places}
+        placeholder="Start typing a location..."
+        label="Where are you going?"
+        labelPlacement="inside"
+        inputProps={{
+          onChange: handleLocationInputChange,
+          value: query,
+        }}
+        onSelectionChange={handlePlaceSelect}
       >
-        <Autocomplete
-          defaultItems={places}
-          placeholder="Start typing a location..."
-          label="Where are you going?"
-          labelPlacement="inside"
-          inputProps={{
-            onChange: handleLocationInputChange,
-            value: query,
-          }}
-          onSelectionChange={handlePlaceSelect}
-        >
-          {(place: PlaceItem) => (
-            <AutocompleteItem key={place.key} textValue={place.label}>
-              {place.label}
-            </AutocompleteItem>
-          )}
-        </Autocomplete>
+        {(place: PlaceItem) => (
+          <AutocompleteItem key={place.key} textValue={place.label}>
+            {place.label}
+          </AutocompleteItem>
+        )}
+      </Autocomplete>
 
-        <DateRangePicker
-          label="When are you going?"
-          labelPlacement="inside"
-          onChange={(range: any) =>
-            setFormPayload((prev) => ({ ...prev, dateRange: range }))
-          }
-        />
-        <Button
-          size="lg"
-          radius="full"
-          color="primary"
-          type="submit"
-          className="w-full lg:w-auto"
-        >
-          Submit
-        </Button>
-      </form>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-    </>
+      <DateRangePicker
+        label="When are you going?"
+        labelPlacement="inside"
+        aria-label="Trip date range"
+        onChange={(range: any) =>
+          setFormPayload((prev) => ({ ...prev, dateRange: range }))
+        }
+      />
+      <Button
+        size="lg"
+        radius="full"
+        color="primary"
+        type="submit"
+        className="w-full lg:w-auto"
+        isDisabled={
+          !formPayload.destination ||
+          !formPayload.dateRange.start ||
+          !formPayload.dateRange.end
+        }
+      >
+        Submit
+      </Button>
+    </form>
   );
 };
 

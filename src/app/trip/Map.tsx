@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { GoogleMap, OverlayView, useJsApiLoader } from "@react-google-maps/api";
-import { Card, CardBody, Button } from "@heroui/react";
+import { Card, CardBody, Button, Skeleton } from "@heroui/react";
 
 interface MapProps {
   attractions: any[];
@@ -55,7 +55,42 @@ const Map = ({ attractions, onViewClick }: MapProps) => {
     [attractions, onViewClick]
   );
 
-  if (!isLoaded) return <div className="w-full">Loading map...</div>;
+  if (!isLoaded) {
+    return (
+      <div className="w-full h-full bg-gray-100 rounded-lg relative overflow-hidden">
+        {/* Scattered skeleton cards */}
+        <div className="absolute top-[20%] left-[30%]">
+          <Card className="w-48 shadow-xl">
+            <CardBody className="gap-3">
+              <Skeleton className="h-4 w-3/4 rounded-lg" />
+              <Skeleton className="h-3 w-1/2 rounded-lg" />
+              <Skeleton className="h-8 w-full rounded-full" />
+            </CardBody>
+          </Card>
+        </div>
+
+        <div className="absolute top-[50%] right-[25%]">
+          <Card className="w-48 shadow-xl">
+            <CardBody className="gap-3">
+              <Skeleton className="h-4 w-3/4 rounded-lg" />
+              <Skeleton className="h-3 w-1/2 rounded-lg" />
+              <Skeleton className="h-8 w-full rounded-full" />
+            </CardBody>
+          </Card>
+        </div>
+
+        <div className="absolute bottom-[25%] left-[45%]">
+          <Card className="w-48 shadow-xl">
+            <CardBody className="gap-3">
+              <Skeleton className="h-4 w-3/4 rounded-lg" />
+              <Skeleton className="h-3 w-1/2 rounded-lg" />
+              <Skeleton className="h-8 w-full rounded-full" />
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <GoogleMap
@@ -74,6 +109,6 @@ const Map = ({ attractions, onViewClick }: MapProps) => {
       {cards}
     </GoogleMap>
   );
-}
+};
 
 export default Map;
