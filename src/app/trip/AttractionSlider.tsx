@@ -8,7 +8,11 @@ import {
 import { useTripContext } from "@/app/context/TripContext";
 import { useState } from "react";
 
-export default function AttractionSlider({ disclosure, attraction, isLoading }) {
+export default function AttractionSlider({
+  disclosure,
+  attraction,
+  isLoading,
+}) {
   const { days, addActivityToDay } = useTripContext();
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
@@ -21,9 +25,9 @@ export default function AttractionSlider({ disclosure, attraction, isLoading }) 
         name: attraction.name,
         ...attraction,
       });
-      
+
       onClose();
-      
+
       setSelectedDay(null);
     }
   };
@@ -42,20 +46,24 @@ export default function AttractionSlider({ disclosure, attraction, isLoading }) 
                   <p className="text-gray-500">Loading details...</p>
                 </div>
               )}
-              
+
               {!isLoading && attraction && (
                 <>
                   {/* Attraction Details */}
                   <div className="space-y-2 w-full">
-                    <p className="text-sm text-gray-600">{attraction.location?.address}</p>
+                    <p className="text-sm text-gray-600">
+                      {attraction.location?.address}
+                    </p>
                     {/* Add more attraction details here */}
                     <p className="text-xs">{JSON.stringify(attraction)}</p>
                   </div>
 
                   {/* Day Selector Section */}
                   <div className="border-t pt-4 space-y-3">
-                    <p className="text-sm font-semibold">Add to your schedule</p>
-                    
+                    <p className="text-sm font-semibold">
+                      Add to your schedule
+                    </p>
+
                     <div className="grid grid-cols-4 gap-2">
                       {days.map((day, index) => {
                         const isSelected = selectedDay === day;
@@ -69,7 +77,9 @@ export default function AttractionSlider({ disclosure, attraction, isLoading }) 
                             onPress={() => setSelectedDay(day)}
                             className="flex-col h-auto py-2"
                           >
-                            <span className="text-xs font-semibold">Day {index + 1}</span>
+                            <span className="text-xs font-semibold">
+                              Day {index + 1}
+                            </span>
                             <span className="text-xs">
                               {new Date(day).toLocaleDateString("en-US", {
                                 month: "short",

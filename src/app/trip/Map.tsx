@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { GoogleMap, OverlayView, useJsApiLoader } from "@react-google-maps/api";
 import { Card, CardBody, Button } from "@heroui/react";
 
@@ -48,7 +48,7 @@ export default function Map({ attractions, onViewClick }: MapProps) {
                 </div>
               </CardBody>
             </Card>
-            <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-transparent border-t-white shadow-md -mt-1" />
+            <div className="w-1 h-2 border-l-4 border-r-4 border-t-8 border-transparent border-t-white shadow-md -mt-1" />
           </div>
         </OverlayView>
       )),
@@ -63,6 +63,7 @@ export default function Map({ attractions, onViewClick }: MapProps) {
       center={initialCenter} // only used on first render
       zoom={15}
       options={{
+        // disable extras from google maps
         gestureHandling: "greedy",
         disableDefaultUI: true,
         clickableIcons: false,

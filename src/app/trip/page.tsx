@@ -1,6 +1,6 @@
 import { TripProvider } from "@/app/context/TripContext";
 import Attractions from "./Attractions";
-import Schedule from "./Schedule";
+import Schedule from "./schedule/Schedule";
 
 const page = () => {
   return (

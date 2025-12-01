@@ -1,5 +1,12 @@
 "use client";
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useId
+} from "react";
 
 interface Activity {
   instanceId: string; // unique id in case a user adds the same activity multiple times
@@ -13,6 +20,11 @@ interface TripContextType {
   schedule: Record<string, Activity[]>;
   addActivityToDay: (day: string, activity: Activity) => void;
   removeActivityFromDay: (day: string, instanceId: string) => void;
+  moveActivityBetweenDays: (
+    fromDay: string,
+    toDay: string,
+    instanceId: string
+  ) => void;
   isLoading: boolean;
 }
 
@@ -36,7 +48,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
       daysList.forEach((day) => (initSchedule[day] = []));
       setSchedule(initSchedule);
     }
-    
+
     setIsLoading(false);
   }, []);
 
@@ -52,25 +64,46 @@ export function TripProvider({ children }: { children: ReactNode }) {
   };
 
   const addActivityToDay = (day: string, activity: any) => {
-  // Generate unique instance ID
-  const instanceId = `${activity.id}-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-  
-  const activityWithInstance: Activity = {
-    ...activity,
-    instanceId,
-  };
-  
-  setSchedule((prev) => ({
-    ...prev,
-    [day]: [...(prev[day] || []), activityWithInstance],
-  }));
-};
+    // Generate unique instance ID
+    const instanceId = crypto.randomUUID();
 
-  const removeActivityFromDay = (day: string, instanceId: string) => {
+    const activityWithInstance: Activity = {
+      ...activity,
+      instanceId,
+    };
+
     setSchedule((prev) => ({
       ...prev,
-      [day]: prev[day]?.filter((activity) => activity.instanceId !== instanceId) || [],
+      [day]: [...(prev[day] || []), activityWithInstance],
     }));
+  };
+
+  const removeActivityFromDay = (day: string, instanceId: string) => {
+    console.log("day and id", { day, instanceId });
+    setSchedule((prev) => ({
+      ...prev,
+      [day]:
+        prev[day]?.filter((activity) => activity.instanceId !== instanceId) ||
+        [],
+    }));
+  };
+
+  const moveActivityBetweenDays = (
+    fromDay: string,
+    toDay: string,
+    instanceId: string
+  ) => {
+    console.log("moveactivty working", { fromDay, toDay, instanceId });
+    setSchedule((prev) => {
+      const activity = prev[fromDay]?.find((a) => a.instanceId === instanceId);
+      if (!activity) return prev;
+
+      return {
+        ...prev,
+        [fromDay]: prev[fromDay].filter((a) => a.instanceId !== instanceId),
+        [toDay]: [...(prev[toDay] || []), activity],
+      };
+    });
   };
 
   return (
@@ -80,6 +113,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
         schedule,
         addActivityToDay,
         removeActivityFromDay,
+        moveActivityBetweenDays,
         isLoading,
       }}
     >
