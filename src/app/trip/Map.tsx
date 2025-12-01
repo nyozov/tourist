@@ -58,7 +58,6 @@ const Map = ({ attractions, onViewClick }: MapProps) => {
   if (!isLoaded) {
     return (
       <div className="w-full h-full bg-gray-100 rounded-lg relative overflow-hidden">
-        {/* Scattered skeleton cards */}
         <div className="absolute top-[20%] left-[30%]">
           <Card className="w-48 shadow-xl">
             <CardBody className="gap-3">

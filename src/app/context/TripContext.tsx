@@ -75,7 +75,7 @@ export const TripProvider = ({ children }: { children: ReactNode }) => {
     return days;
   };
 
-  const addActivityToDay = (day: string, activity: any) => {
+  const addActivityToDay = (day: string, activity: Activity) => {
     // Generate unique instance ID
     const instanceId = crypto.randomUUID();
 

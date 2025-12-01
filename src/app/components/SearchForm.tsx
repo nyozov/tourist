@@ -29,6 +29,7 @@ const SearchForm = () => {
   });
 
   const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [places, setPlaces] = useState<PlaceItem[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -64,6 +65,7 @@ const SearchForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const { destination, dateRange } = formPayload;
 
@@ -118,7 +120,8 @@ const SearchForm = () => {
         isDisabled={
           !formPayload.destination ||
           !formPayload.dateRange.start ||
-          !formPayload.dateRange.end
+          !formPayload.dateRange.end ||
+          isLoading
         }
       >
         Submit
