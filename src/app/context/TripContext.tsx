@@ -1,11 +1,11 @@
 "use client";
+
 import {
   createContext,
   useContext,
   useState,
   useEffect,
   ReactNode,
-  useId
 } from "react";
 
 interface Activity {
@@ -30,7 +30,19 @@ interface TripContextType {
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
 
-export function TripProvider({ children }: { children: ReactNode }) {
+// To differentiate created activity cards with different background colors
+const gradients = [
+  "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-200",
+  "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-blue-200",
+  "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-green-200",
+  "bg-gradient-to-br from-orange-500/20 to-red-500/20 border-orange-200",
+  "bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border-indigo-200",
+  "bg-gradient-to-br from-pink-500/20 to-rose-500/20 border-pink-200",
+  "bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border-teal-200",
+  "bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border-amber-200",
+];
+
+export const TripProvider = ({ children }: { children: ReactNode }) => {
   const [days, setDays] = useState<string[]>([]);
   const [schedule, setSchedule] = useState<Record<string, Activity[]>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +82,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
     const activityWithInstance: Activity = {
       ...activity,
       instanceId,
+      backgroundColor: gradients[Math.floor(Math.random() * gradients.length)],
     };
 
     setSchedule((prev) => ({
@@ -79,7 +92,6 @@ export function TripProvider({ children }: { children: ReactNode }) {
   };
 
   const removeActivityFromDay = (day: string, instanceId: string) => {
-    console.log("day and id", { day, instanceId });
     setSchedule((prev) => ({
       ...prev,
       [day]:
@@ -93,7 +105,6 @@ export function TripProvider({ children }: { children: ReactNode }) {
     toDay: string,
     instanceId: string
   ) => {
-    console.log("moveactivty working", { fromDay, toDay, instanceId });
     setSchedule((prev) => {
       const activity = prev[fromDay]?.find((a) => a.instanceId === instanceId);
       if (!activity) return prev;
@@ -120,12 +131,12 @@ export function TripProvider({ children }: { children: ReactNode }) {
       {children}
     </TripContext.Provider>
   );
-}
+};
 
-export function useTripContext() {
+export const useTripContext = () => {
   const context = useContext(TripContext);
   if (!context) {
     throw new Error("useTripContext must be used within TripProvider");
   }
   return context;
-}
+};

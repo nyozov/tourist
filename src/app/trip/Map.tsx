@@ -9,7 +9,7 @@ interface MapProps {
   onViewClick: (attraction: any) => void;
 }
 
-export default function Map({ attractions, onViewClick }: MapProps) {
+const Map = ({ attractions, onViewClick }: MapProps) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!,
   });
@@ -55,7 +55,7 @@ export default function Map({ attractions, onViewClick }: MapProps) {
     [attractions, onViewClick]
   );
 
-  if (!isLoaded) return <div>Loading map...</div>;
+  if (!isLoaded) return <div className="w-full">Loading map...</div>;
 
   return (
     <GoogleMap
@@ -75,3 +75,5 @@ export default function Map({ attractions, onViewClick }: MapProps) {
     </GoogleMap>
   );
 }
+
+export default Map;

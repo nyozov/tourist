@@ -18,13 +18,6 @@ const gradients = [
   "bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border-amber-200",
 ];
 
-const getGradientForActivity = (activityId: string) => {
-  let hash = 0;
-  for (let i = 0; i < activityId.length; i++) {
-    hash = activityId.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return gradients[Math.abs(hash) % gradients.length];
-};
 
 interface ActivityCardProps {
   activity: any;
@@ -39,7 +32,6 @@ const ActivityCard = ({ activity, day }: ActivityCardProps) => {
     data: { fromDay: day },
   });
 
-  const gradientClass = getGradientForActivity(activity.id);
 
 
   const handleRemove = () => {
@@ -53,7 +45,7 @@ const ActivityCard = ({ activity, day }: ActivityCardProps) => {
       {...attributes}
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
-      <Card className={`shadow-sm ${gradientClass} cursor-move rounded-3xl`}>
+      <Card className={`shadow-sm ${activity.backgroundColor} cursor-move rounded-3xl`}>
         <CardBody className="p-3 flex flex-row justify-between items-center">
           <div className="flex-1">
             <p className="font-medium text-sm">{activity.name}</p>

@@ -6,7 +6,6 @@ import {
   AutocompleteItem,
   Button,
   DateRangePicker,
-  NumberInput,
 } from "@heroui/react";
 import { formatHeroDate, HeroDate } from "@/formatters";
 
@@ -21,14 +20,12 @@ interface PlaceItem {
 interface FormPayload {
   destination: PlaceItem | null;
   dateRange: { start: HeroDate | null; end: HeroDate | null };
-  travelers: number;
 }
 
 const SearchForm = () => {
   const [formPayload, setFormPayload] = useState<FormPayload>({
     destination: null,
     dateRange: { start: null, end: null },
-    travelers: 1,
   });
 
   const [query, setQuery] = useState("");
@@ -69,7 +66,7 @@ const SearchForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { destination, dateRange, travelers } = formPayload;
+    const { destination, dateRange } = formPayload;
 
     if (!destination || !dateRange.start || !dateRange.end) {
       setError("Please fill out all fields");
@@ -82,7 +79,6 @@ const SearchForm = () => {
       lon: destination?.lon?.toString(),
       start: formatHeroDate(dateRange.start)?.toISOString(),
       end: formatHeroDate(dateRange.end)?.toISOString(),
-      travelers: travelers.toString(),
     });
 
     router.push(`/trip?${params.toString()}`);
@@ -92,7 +88,7 @@ const SearchForm = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-6xl flex flex-col lg:flex-row gap-4 items-center p-6 border-1 rounded-lg border-gray-200 shadow-sm"
+        className="w-full max-w-6xl flex flex-col lg:flex-row gap-4 items-center p-6 border-1 rounded-3xl border-gray-200 shadow-sm"
       >
         <Autocomplete
           defaultItems={places}
@@ -119,18 +115,6 @@ const SearchForm = () => {
             setFormPayload((prev) => ({ ...prev, dateRange: range }))
           }
         />
-
-        <NumberInput
-          label="Number of Travelers"
-          labelPlacement="inside"
-          minValue={1}
-          defaultValue={1}
-          className="w-full lg:w-1/2"
-          onValueChange={(value) =>
-            setFormPayload((prev) => ({ ...prev, travelers: value }))
-          }
-        />
-
         <Button
           size="lg"
           radius="full"
@@ -142,10 +126,6 @@ const SearchForm = () => {
         </Button>
       </form>
       {error && <p className="text-red-500 mt-2">{error}</p>}
-
-      <pre className="mt-4 p-2 bg-gray-100 rounded">
-        {JSON.stringify(formPayload, null, 2)}
-      </pre>
     </>
   );
 };

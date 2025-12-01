@@ -4,7 +4,7 @@ import { useDisclosure } from "@heroui/react";
 import Map from "./Map";
 import AttractionSlider from "./AttractionSlider";
 
-export default function Attractions() {
+const Attractions = () => {
   const [attractions, setAttractions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,3 +58,5 @@ export default function Attractions() {
     </div>
   );
 }
+
+export default Attractions;

@@ -6,13 +6,13 @@ import { DndContext, DragOverlay } from "@dnd-kit/core";
 import DayCard from "./DayCard";
 import ActivityCard from "./ActivityCard";
 
-export default function Schedule() {
+const Schedule = () => {
   const { days, schedule, isLoading, moveActivityBetweenDays } =
     useTripContext();
 
   const [activeActivity, setActiveActivity] = useState<any>(null);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="w-1/2">Loading...</div>;
 
   const handleDragStart = (event: any) => {
     const { active } = event;
@@ -66,4 +66,6 @@ export default function Schedule() {
       </DragOverlay>
     </DndContext>
   );
-}
+};
+
+export default Schedule;

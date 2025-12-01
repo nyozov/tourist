@@ -8,11 +8,7 @@ import {
 import { useTripContext } from "@/app/context/TripContext";
 import { useState } from "react";
 
-export default function AttractionSlider({
-  disclosure,
-  attraction,
-  isLoading,
-}) {
+const AttractionSlider = ({ disclosure, attraction, isLoading }) => {
   const { days, addActivityToDay } = useTripContext();
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
@@ -109,4 +105,6 @@ export default function AttractionSlider({
       </DrawerContent>
     </Drawer>
   );
-}
+};
+
+export default AttractionSlider;
