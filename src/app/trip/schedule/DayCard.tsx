@@ -24,7 +24,8 @@ const DayCard = ({ day, index, activities }: DayCardProps) => {
             Day {index + 1}
           </Chip>
           <p className="text-sm font-semibold">
-            {new Date(day).toLocaleDateString("en-US", {
+            {new Date(day + "T00:00:00").toLocaleDateString("en-US", {
+              // keep + T00 to avoid timezone issues
               month: "short",
               day: "numeric",
               weekday: "short",
@@ -60,7 +61,6 @@ const DayCard = ({ day, index, activities }: DayCardProps) => {
     </Card>
   );
 };
-
 
 // Memoize to fix drag and drop lag, not sure if this one is needed here
 export default memo(DayCard, (prev, next) => {

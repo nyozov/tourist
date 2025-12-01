@@ -60,7 +60,7 @@ const AttractionSlider = ({ disclosure, attraction, isLoading }) => {
                       Add to your schedule
                     </p>
 
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-4 gap-2 max-h-72 overflow-y-auto">
                       {days.map((day, index) => {
                         const isSelected = selectedDay === day;
                         return (
